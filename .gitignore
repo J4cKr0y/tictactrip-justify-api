@@ -1,0 +1,65 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dépendances
+node_modules/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# Fichiers de build / distribution
+/build
+dist/
+dist-ssr/
+web-build/
+expo-env.d.ts
+
+# images
+/images
+
+# Fichiers temporaires / anciens
+*.tmp
+*.old
+old/
+*.orig.*
+
+# Logs & Debug
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.metro-health-check*
+
+# Fichiers d'environnement
+.env
+.env*.local
+*.local
+*.prod
+zenv.json
+
+# Répertoires d'éditeur
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Fichiers spécifiques à Windows / macOS / IDE
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.pem
+
+# TypeScript
+*.tsbuildinfo
+
+# Autres fichiers spécifiques au projet
+.qodo
