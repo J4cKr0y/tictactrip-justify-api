@@ -9,7 +9,13 @@ export const createRateLimitMiddleware = (
     
     return (req: Request, res: Response, next: NextFunction) => {
         const token = (req as any).clientToken as string; 
-		// On ne connait pas le nombre de mots car on a pas encore parsé le texte
+		
+		// Si le Content-Type n'est pas text/plain,
+        // on passe au contrôleur (qui retournera 415) sans bloquer le stream.
+        if (req.header('Content-Type') !== 'text/plain') {
+            return next();
+        }
+		
         let textBody = '';
         
         // On écoute le flux de données pour reconstruire le corps du texte

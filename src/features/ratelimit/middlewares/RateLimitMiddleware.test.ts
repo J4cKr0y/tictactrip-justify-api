@@ -13,10 +13,12 @@ const mockRequest = (token: string, textBody: string): Partial<Request> & EventE
     (req as any).clientToken = token;
     
     // Simuler la méthode "header"
-    req.header = jest.fn((name) => {
-        if (name === 'Content-Type') return 'text/plain';
+    req.header = jest.fn((name: string) => {
+        if (name.toLowerCase() === 'content-type') {
+            return 'text/plain';
+        }
         return undefined;
-    });
+    }) as unknown as Request['header']; // On force le type pour satisfaire l'interface
 
     // Simuler les méthodes de stream
     setTimeout(() => {
