@@ -2,6 +2,7 @@
 import express, { Application, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import authRouter from './features/auth/routes/AuthRouter';
+import justifyRouter from './features/justification/routes/JustifyRouter'; 
 
 dotenv.config();
 
@@ -16,9 +17,9 @@ app.get('/health', (req: Request, res: Response) => {
     res.status(200).send('API Health Check OK');
 });
 
-// Route d'Authentification
+// Routes
 app.use('/api', authRouter); 
-
+app.use('/api', justifyRouter);
 
 // Démarrage du serveur
 if (process.env.NODE_ENV !== 'test') {
