@@ -1,0 +1,161 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Tictactrip Justify API",
+    "version": "1.0.0",
+    "description": "API REST pour la justification de texte avec authentification par token et limite journalière de 80 000 mots."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Serveur Local"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Le token d'authentification à utiliser dans les requêtes protégées.",
+            "example": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Message d'erreur.",
+            "example": "Unauthorized: Invalid token."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "UUID",
+        "description": "Authentification via un Bearer Token."
+      }
+    }
+  },
+  "paths": {
+    "/api/token": {
+      "post": {
+        "summary": "Génère un token d'authentification",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "L'adresse email pour laquelle le token est généré.",
+                    "example": "dev@tictactrip.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token d'authentification généré avec succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email manquant ou invalide.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/justify": {
+      "post": {
+        "summary": "Justifie le texte selon la contrainte de 80 caractères par ligne.",
+        "tags": [
+          "Justification"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "description": "Le texte à justifier. Compte dans la limite journalière de 80 000 mots.",
+                "example": "Ceci est un paragraphe à justifier. Le développement de cette API REST est un excellent exercice de TDD et de séparation des préoccupations."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Texte justifié retourné en text/plain.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Ceci est un paragraphe à justifier. Le développement de cette API REST est un excellent\r\nexercice de TDD et de séparation des préoccupations."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé (Token manquant ou invalide).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Paiement requis (Limite journalière atteinte).",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Payment Required: Daily word limit exceeded (80,000 words)."
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Type de média non supporté. Attendu Content-Type text/plain."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+# docs/swagger/components.yaml
+
+# Schémas de données (Data Schemas)
+schemas:
+  TokenResponse:
+    type: object
+    properties:
+      token:
+        type: string
+        description: Le token d'authentification à utiliser dans les requêtes protégées.
+        example: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6"
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+        description: Message d'erreur.
+        example: "Unauthorized: Invalid token."
+
+# Schémas de sécurité (Security Schemes)
+securitySchemes:
+  BearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: UUID
+    description: Authentification via un Bearer Token.
