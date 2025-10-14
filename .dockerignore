@@ -1,0 +1,16 @@
+# .dockerignore
+
+# Dossiers générés
+/node_modules
+/dist
+
+# Fichiers de développement et de configuration
+.git
+.gitignore
+.env
+*.log
+npm-debug.log
+.vscode
+jest.config.js
+*.test.ts
+src/**/*.test.ts
