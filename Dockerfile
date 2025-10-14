@@ -14,14 +14,14 @@ COPY package.json package-lock.json ./
 
 # Installer toutes les dépendances (y compris devDependencies pour la compilation)
 # Ajout du flag --quiet pour des logs plus propres
-RUN npm install --quiet
+RUN npm ci
 
 # Copier le reste du code source
 COPY . .
 
-# Exécuter la compilation (génère le dossier 'dist') et le bundling de la documentation
-# La commande 'prestart' est utilisée ici car elle exécute 'build' et 'doc:bundle'
-RUN npm run prestart
+# Exécuter explicitement le build, PUIS le bundling de la doc.
+RUN npm run build
+RUN npm run doc:bundle 
 
 
 # =========================================================
