@@ -12,16 +12,18 @@ import * as fs from 'fs';
 dotenv.config();
 
 // Charger la spécification OpenAPI à partir du fichier YAML
-const swaggerSpecPath = path.join(__dirname, '..', 'docs', 'swagger', 'swagger.json');
+const swaggerSpecPath = path.resolve(__dirname, '..', 'docs', 'swagger', 'swagger.json'); 
 let swaggerDocument: object = {};
+
 try {
     // Dans l'environnement de build (dist), le chemin doit être ajusté
     // Si vous êtes en mode dev, le chemin est correct.
     const finalPath = process.env.NODE_ENV === 'production' ? path.join(process.cwd(), 'dist', 'docs', 'swagger', 'swagger.json') : swaggerSpecPath;
     const fileContents = fs.readFileSync(finalPath, 'utf8');
-    swaggerDocument = JSON.parse(fileContents); 
+    swaggerDocument = JSON.parse(fileContents.trim()); 
+	
 } catch (e) {
-    console.error("Erreur lors du chargement de la spécification Swagger JSON (Assurez-vous d'exécuter 'npm run doc:bundle'):", e);
+    console.error("Erreur lors du chargement de la spécification Swagger JSON:", e);
     // Si la doc ne charge pas, on continue l'exécution de l'API sans doc
 }
 
