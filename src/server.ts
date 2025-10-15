@@ -32,7 +32,18 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Route de Documentation Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
+app.use(
+    '/api-docs', 
+    swaggerUi.serve, 
+    swaggerUi.setup(swaggerDocument, {
+        // Dit à l'interface Swagger où chercher le fichier JSON
+        swaggerOptions: {
+            url: '/api-docs', 
+			// Option tryItOutEnabled À DÉCOMMENTER EN CONDITION REEL
+			//tryItOutEnabled: process.env.NODE_ENV !== 'production'
+        }
+    })
+); 
 
 // Route de test pour la santé du serveur
 app.get('/health', (req: Request, res: Response) => {
