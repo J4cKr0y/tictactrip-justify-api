@@ -35,16 +35,14 @@ app.use(express.json());
 
 // Route de Documentation Swagger
 app.get('/swagger.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerDocument);
+    res.json(swaggerDocument);
 });
 app.use(
     '/api-docs', 
     swaggerUi.serve, 
-    swaggerUi.setup(null, { // Le premier argument est null pour ne pas créer de conflit
-        //  Pointer l'interface vers le chemin dédié
+    swaggerUi.setup(null, { 
         swaggerOptions: {
-            url: '/swagger.json', 
+            url: '/swagger.json',
 			// Option tryItOutEnabled À DÉCOMMENTER EN CONDITION REEL
 			//tryItOutEnabled: process.env.NODE_ENV !== 'production',
         }
