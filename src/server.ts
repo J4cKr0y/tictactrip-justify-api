@@ -30,6 +30,12 @@ const PORT = process.env.PORT || 3000;
 // Middleware de base
 app.use(express.json());
 
+// Route Ping
+app.get('/ping', (req, res) => {
+  console.log(`[Ping reçu] ${new Date().toISOString()}`);
+  res.send('pong');
+});
+
 // Route de Documentation Swagger
 app.get('/swagger.json', (req, res) => {
     res.json(swaggerDocument);
